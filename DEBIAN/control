@@ -1,0 +1,5 @@
+Package: terminal-runner
+Version: 1.0
+Architecture: all
+Maintainer: YourName <your.email@example.com>
+Description: Your JavaFX Application Description

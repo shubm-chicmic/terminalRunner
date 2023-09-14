@@ -1,0 +1,39 @@
+/* styles.css */
+
+/* Apply a style to the menu bar */
+.menu-bar {
+    -fx-background-color: #f0f0f0; /* Light gray background color */
+    -fx-padding: 5px;
+}
+
+/* Style the menu */
+.menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333; /* Dark gray text color */
+}
+
+/* Style the menu items */
+.menu-item {
+    -fx-padding: 5px 10px;
+}
+
+/* Apply hover effect to menu items */
+.menu-item:hover {
+    -fx-background-color: #d3d3d3; /* Light gray background color on hover */
+}
+
+/* Apply dark theme styles */
+.root {
+    -fx-background-color: #333333; /* Dark background color */
+    -fx-text-fill: #ffffff; /* White text color */
+}
+
+/* Customize the VBox (menu content) */
+.menu-content {
+    -fx-padding: 10px; /* Add some padding inside the VBox */
+}
+
+/* Customize the VBox position */
+.menu-box {
+    -fx-alignment: TOP_RIGHT; /* Align the VBox to the top-right corner */
+}
