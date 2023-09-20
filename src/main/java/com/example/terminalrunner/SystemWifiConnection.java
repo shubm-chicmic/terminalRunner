@@ -19,6 +19,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -63,16 +65,33 @@ public class SystemWifiConnection {
         TrayIcon trayIcon = new TrayIcon(icon);
 
         trayIcon.setToolTip("Your Application Name");
+        PopupMenu popupMenu = new PopupMenu();
 
+        // Create an "Exit" MenuItem
+        MenuItem exitMenuItem = new MenuItem("Exit");
+        exitMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle the exit action here
+                System.exit(0); // Exit the application
+            }
+        });
+
+        // Add the "Exit" MenuItem to the PopupMenu
+        popupMenu.add(exitMenuItem);
+
+        // Set the PopupMenu for the TrayIcon
+        trayIcon.setPopupMenu(popupMenu);
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!isConnected) {
-                    sendHttpRequestToConnect();
-                    trayIcon.setImage(connectedImage);
-                } else {
-                    sendHttpRequestToDisconnect();
-                    trayIcon.setImage(disconnectedImage);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (!isConnected) {
+                        sendHttpRequestToConnect();
+                        trayIcon.setImage(connectedImage);
+                    } else {
+                        sendHttpRequestToDisconnect();
+                        trayIcon.setImage(disconnectedImage);
+                    }
                 }
 //                System.out.println("wifi clicked");
             }
@@ -163,7 +182,7 @@ public class SystemWifiConnection {
                         public void run() {
                             sendHttpRequestToCheckConnection();
                         }
-                    }, 0, 300000); // Delay of 0 milliseconds, repeat every 5000 milliseconds (5 seconds)
+                    }, 0, 900000); // Delay of 0 milliseconds, repeat every 5000 milliseconds (5 seconds)
                 } else {
                     // Handle other status codes as needed
                     System.out.println("sc!200");
