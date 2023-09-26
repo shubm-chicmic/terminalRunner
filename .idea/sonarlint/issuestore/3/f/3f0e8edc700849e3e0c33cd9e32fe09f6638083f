@@ -1,0 +1,24 @@
+
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8â¾üü¤1
+g	java:S112`"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8â¾üü¤1
+€
+java:S1488"cImmediately return this expression instead of assigning it to the temporary variable "resizeImage".(Í…ò‹8â¾üü¤1
+\
+java:S1118":Add a private constructor to hide the implicit public one.(ÄÿßÈşÿÿÿÿ8ê¾üü¤1
+8
+java:S3626<"Remove this redundant jump.(ûÁİ…8ë¾üü¤1
+[
+java:S1172"9Remove these unused method parameters "title", "message".(ò£ıÌúÿÿÿÿ8ì¾üü¤1
+N
+java:S1874",Remove this use of "exec"; it is deprecated.(ÏëÛ†üÿÿÿÿ8ì¾üü¤1
+]	java:S125&"<This block of commented-out lines of code should be removed.(àÅ¢üÿÿÿÿ8í¾üü¤1
+Z	java:S106;"9Replace this use of System.out or System.err by a logger.(±ˆæûÿÿÿÿ8í¾üü¤1
+U	java:S106?"9Replace this use of System.out or System.err by a logger.(ıÈéá8î¾üü¤1
+N
+java:S1874X",Remove this use of "exec"; it is deprecated.(ÏëÛ†üÿÿÿÿ8ï¾üü¤1
+I
+java:S1874\",Remove this use of "exec"; it is deprecated.(¿…»»8ï¾üü¤1
+Q
+java:S1144B"4Remove this unused private "chooseImageFile" method.(×¡úÔ8ï¾üü¤1
+X
+java:S1144K"6Remove this unused private "loadImageFromFile" method.(¼®ùÿÿÿÿ8ï¾üü¤1

@@ -3,6 +3,8 @@ package com.example.terminalrunner;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -39,17 +41,32 @@ public class NotificationUtils {
 //            trayIcon.setBounds(trayIcon.getBounds().x, trayIcon.getBounds().y + verticalShift,
 //                    trayIcon.getIconWidth(), trayIcon.getIconHeight());
 //            trayIcon.se
+            PopupMenu popupMenu = new PopupMenu();
+            MenuItem exitMenuItem = new MenuItem("Exit");
+
+            // Add an ActionListener to handle the exit action
+            exitMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0); // Exit the application
+                }
+            });
+
+            popupMenu.add(exitMenuItem);
+            trayIcon.setPopupMenu(popupMenu);
             trayIcon.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(isImage1Enabled) {
-                        trayIcon.setImage(image2[0]);
-                        isImage1Enabled = false;
-                    }else {
-                        trayIcon.setImage(image1[0]);
-                        isImage1Enabled = true;
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        if (isImage1Enabled) {
+                            trayIcon.setImage(image2[0]);
+                            isImage1Enabled = false;
+                        } else {
+                            trayIcon.setImage(image1[0]);
+                            isImage1Enabled = true;
+                        }
+                        runInTerminal();
                     }
-                    runInTerminal();
 
                 }
             });
@@ -96,4 +113,13 @@ public class NotificationUtils {
             throw new RuntimeException(e);
         }
     }
+//     try {
+//        Process process = runtime.exec(command);
+//        int exitCode = process.waitFor(); // Wait for the command to complete
+//        if (exitCode != 0) {
+//            System.err.println("Command failed with exit code: " + exitCode);
+//        }
+//    } catch (IOException | InterruptedException e) {
+//        throw new RuntimeException(e);
+//    }
 }

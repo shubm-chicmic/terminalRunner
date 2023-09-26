@@ -182,7 +182,7 @@ public class SystemWifiConnection {
                         public void run() {
                             sendHttpRequestToCheckConnection();
                         }
-                    }, 0, 900000); // Delay of 0 milliseconds, repeat every 5000 milliseconds (5 seconds)
+                    }, 0, 420000); // Delay of 0 milliseconds, repeat every 5000 milliseconds (5 seconds)
                 } else {
                     // Handle other status codes as needed
                     System.out.println("sc!200");
