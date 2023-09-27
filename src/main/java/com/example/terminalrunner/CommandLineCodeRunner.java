@@ -1,12 +1,13 @@
 package com.example.terminalrunner;
 
 import javafx.application.Platform;
-import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -28,7 +29,7 @@ public  class CommandLineCodeRunner {
             Platform.setImplicitExit(false); // Prevent JavaFX application from exiting when the window is closed
 
             // Create an image for the tray icon
-            java.awt.Image trayIconImage =  Toolkit.getDefaultToolkit().getImage(NotificationUtils.class.getResource("/one.png"));
+            java.awt.Image trayIconImage =  Toolkit.getDefaultToolkit().getImage(NotificationUtils.class.getResource("/commandLineRunner.png"));
 
 
             // Create a tray icon
@@ -56,22 +57,22 @@ public  class CommandLineCodeRunner {
             } catch (AWTException e) {
                 System.err.println("TrayIcon could not be added.");
             }
-            trayIcon.addActionListener(e -> handleTrayIconClick());
+            trayIcon.addActionListener(e -> handleTrayIconClick(trayIcon));
         } else {
             System.err.println("SystemTray is not supported.");
         }
 
     }
-    private static void showHtmlContent() {
-            WebView webView = new WebView();
-            WebEngine webEngine = webView.getEngine();
+    private static void showHtmlContent(TrayIcon trayIcon) {
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
 
-            webEngine.load(CommandLineCodeRunner.class.getResource("/commandLine.html").toExternalForm());
+        webEngine.load(CommandLineCodeRunner.class.getResource("/commandLine.html").toExternalForm());
 
-            // Create a JavaFX Stage to display the WebView
-            Stage stage = new Stage();
-            stage.setScene(new Scene(webView));
-            stage.initStyle(StageStyle.UNDECORATED);
+        // Create a JavaFX Stage to display the WebView
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(null); // Important: Set owner to null to remove taskbar entry
 
         Button closeButton = new Button("X");
         closeButton.setOnAction(e -> stage.close());
@@ -84,18 +85,23 @@ public  class CommandLineCodeRunner {
         Scene scene = new Scene(root, 400, 300); // Adjust the size as needed
         stage.setScene(scene);
 
-        // Position the close button at the top
-        VBox.setMargin(closeButton, new Insets(10, 10, 0, 10));
+        // Position the stage below the system tray icon
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        double x = trayIcon.getSize().getHeight() + 900; // Adjust the X-coordinate as needed
+        double y = trayIcon.getSize().getWidth(); // Adjust the Y-coordinate as needed
+
+        stage.setX(x);
+        stage.setY(y);
 
         stage.show();
 
 
     }
-    private static void handleTrayIconClick() {
+    private static void handleTrayIconClick(TrayIcon trayIcon) {
 
         Platform.runLater(() -> {
             System.out.println("Tray icon clicked!");
-            showHtmlContent();
+            showHtmlContent(trayIcon);
         });
     }
 

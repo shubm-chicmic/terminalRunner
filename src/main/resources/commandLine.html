@@ -1,356 +1,690 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - youtube.com/codingnepal -->
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Todo List App in JavaScript | CodingNepal</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Iconscout Link For Icons -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <meta name="theme-color" content="#062e3f">
+    <meta name="Description" content="A dynamic and aesthetic To-Do List WebApp.">
+
+    <!-- Google Font: Quick Sand -->
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+
+    <!-- font awesome (https://fontawesome.com) for basic icons; source: https://cdnjs.com/libraries/font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+
+    <link rel="shortcut icon" type="image/png" href="assets/favicon.png"/>
+    <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="CSS/corner.css">
+    <title>JUST DO IT</title>
     <style>
-        /* Import Google Font - Poppins */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-        *{
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out;
+        }
+
+        @keyframes octocat-wave {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            20% {
+                transform: rotate(-25deg);
+            }
+
+            40% {
+                transform: rotate(10deg);
+            }
+
+            60% {
+                transform: rotate(-25deg);
+            }
+
+            80% {
+                transform: rotate(10deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .github-corner:hover .octo-arm {
+                animation: none;
+            }
+
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out;
+            }
+        }
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
 
-        ::selection{
-            color: #fff;
-            background: #3C87FF;
-        }
-        .wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 0; /* Remove border-radius to make it square */
-            box-shadow: none; /* Remove box-shadow */
-        }
-        .task-input{
-            height: 52px;
-            padding: 0 25px;
-            position: relative;
-        }
-        .task-input img{
-            top: 50%;
-            position: absolute;
-            transform: translate(17px, -50%);
-        }
-        .task-input input{
-            height: 100%;
-            width: 100%;
-            outline: none;
-            font-size: 18px;
-            border-radius: 5px;
-            padding: 0 20px 0 53px;
-            border: 1px solid #999;
-        }
-        .task-input input:focus,
-        .task-input input.active{
-            padding-left: 52px;
-            border: 2px solid #3C87FF;
-        }
-        .task-input input::placeholder{
-            color: #bfbfbf;
-        }
-        .controls, li{
-            display: flex;
+        body {
+        /* #363532, rgb(88, 111, 112) */
             align-items: center;
-            justify-content: space-between;
-        }
-        .controls{
-            padding: 18px 25px;
-            border-bottom: 1px solid #ccc;
-        }
-        .filters span{
-            margin: 0 8px;
-            font-size: 17px;
-            color: #444444;
-            cursor: pointer;
-        }
-        .filters span:first-child{
-            margin-left: 0;
-        }
-        .filters span.active{
-            color: #3C87FF;
-        }
-        .controls .clear-btn{
-            border: none;
-            opacity: 0.6;
-            outline: none;
-            color: #fff;
-            cursor: pointer;
-            font-size: 13px;
-            padding: 7px 13px;
-            border-radius: 4px;
-            letter-spacing: 0.3px;
-            pointer-events: none;
-            transition: transform 0.25s ease;
-            background: linear-gradient(135deg, #1798fb 0%, #2D5CFE 100%);
-        }
-        .clear-btn.active{
-            opacity: 0.9;
-            pointer-events: auto;
-        }
-        .clear-btn:active{
-            transform: scale(0.93);
-        }
-        .task-box{
-            margin-top: 20px;
-            margin-right: 5px;
-            padding: 0 20px 10px 25px;
-        }
-        .task-box.overflow{
-            overflow-y: auto;
-            max-height: 300px;
-        }
-        .task-box::-webkit-scrollbar{
-            width: 5px;
-        }
-        .task-box::-webkit-scrollbar-track{
-            background: #f1f1f1;
-            border-radius: 25px;
-        }
-        .task-box::-webkit-scrollbar-thumb{
-            background: #e6e6e6;
-            border-radius: 25px;
-        }
-        .task-box .task{
-            list-style: none;
-            font-size: 17px;
-            margin-bottom: 18px;
-            padding-bottom: 16px;
-            align-items: flex-start;
-            border-bottom: 1px solid #ccc;
-        }
-        .task-box .task:last-child{
-            margin-bottom: 0;
-            border-bottom: 0;
-            padding-bottom: 0;
-        }
-        .task-box .task label{
             display: flex;
-            align-items: flex-start;
-        }
-        .task label input{
-            margin-top: 7px;
-            accent-color: #3C87FF;
-        }
-        .task label p{
-            user-select: none;
-            margin-left: 12px;
-            word-wrap: break-word;
-        }
-        .task label p.checked{
-            text-decoration: line-through;
-        }
-        .task-box .settings{
-            position: relative;
-        }
-        .settings :where(i, li){
-            cursor: pointer;
-        }
-        .settings .task-menu{
-            z-index: 10;
-            right: -5px;
-            bottom: -65px;
-            padding: 5px 0;
-            background: #fff;
-            position: absolute;
-            border-radius: 4px;
-            transform: scale(0);
-            transform-origin: top right;
-            box-shadow: 0 0 6px rgba(0,0,0,0.15);
-            transition: transform 0.2s ease;
-        }
-        .task-box .task:last-child .task-menu{
-            bottom: 0;
-            transform-origin: bottom right;
-        }
-        .task-box .task:first-child .task-menu{
-            bottom: -65px;
-            transform-origin: top right;
-        }
-        .task-menu.show{
-            transform: scale(1);
-        }
-        .task-menu li{
-            height: 25px;
-            font-size: 16px;
-            margin-bottom: 2px;
-            padding: 17px 15px;
-            cursor: pointer;
-            justify-content: flex-start;
-        }
-        .task-menu li:last-child{
-            margin-bottom: 0;
-        }
-        .settings li:hover{
-            background: #f5f5f5;
-        }
-        .settings li i{
-            padding-right: 8px;
+            flex-direction: column;
+            font-family: 'Work Sans', sans-serif;
+            min-height: 100vh;
+            padding-top: 3%;
         }
 
-        @media (max-width: 400px) {
-            body{
-                padding: 0 10px;
+        /* Body light or darker themes */
+        .standard {
+            background-image: linear-gradient(100deg, #575656, #062e3f);
+            color: #ffdfdb;
+            transition: 0.3s linear;
+            overflow: hidden;
+        }
+
+        .light {
+            background-image: linear-gradient(100deg, #d4f1ff, #ffffff);
+            color: #1a150e;
+            transition: 0.3s linear;
+        }
+
+        .darker {
+            background-image: linear-gradient(100deg, #001214, #001f29);
+            color: white;
+            transition: 0.3s linear;
+        }
+
+        #header, #form, #datetime {
+            margin: 0 1rem;
+            min-height: 10vh;
+            width: 100%;
+        }
+
+        #header {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            font-size: 3rem;
+            min-height: 25vh;
+            width: 100%;
+        }
+
+        /* Theme buttons div */
+        .flexrow-container {
+            align-items: center;
+            align-self: flex-end;
+            display: flex;
+            justify-content: space-around;
+            margin-right: 3%;
+        }
+
+        .theme-selector {
+            border: 1px solid #d1dae3;
+            border-radius: 100%;
+            height: 35px;
+            margin: 0 8px;
+            transition: tranform 150ms ease-in-out, box-shadow 200ms ease-in-out;
+            width: 35px;
+        }
+
+        .theme-selector:hover {
+            box-shadow: white 0 0 8px;
+            cursor: pointer;
+        }
+
+        .theme-selector:active {
+            transform: scale(0.95);
+        }
+
+        .standard-theme {
+            background-image: linear-gradient(100deg, #575656, #062e3f);
+        }
+
+        .light-theme {
+            background-image: linear-gradient(100deg, #d4f1ff, #ffffff);
+        }
+
+        .darker-theme {
+            background-image: linear-gradient(100deg, #001214, #001f29);
+        }
+
+        /* Animation */
+        #title {
+            border-right: solid 3px rgba(0, 0, 0, 0.75);
+            white-space: pre;
+            overflow: hidden;
+            letter-spacing: 0.20rem;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            max-width: 480px;
+        }
+
+        /* Animation */
+        #title {
+            animation: animated-text 2s steps(11,end) 0.5s 1 normal both,
+            animated-cursor 750ms steps(11,end) infinite;
+        }
+
+        #title.darker-title {
+            animation: animated-text 2s steps(11,end) 0.5s 1 normal both, darker-animated-cursor 750ms steps(11,end) infinite;
+        }
+
+        /* text animation */
+
+        @keyframes animated-text{
+            from{width: 0%;}
+            to{width: 480px;}
+        }
+
+        /* cursor animations */
+
+        @keyframes animated-cursor{
+            from{border-right-color: rgba(0, 0, 0, 0.75);}
+            to{border-right-color: transparent;}
+        }
+
+        @keyframes darker-animated-cursor {
+            from{border-right-color: #01394c;}
+            to{border-right-color: transparent;}
+        }
+
+        form {
+            display: flex;
+            font-size: 1.7rem;
+            justify-content: center;
+            margin: 15px 0;
+            padding: 0.8rem;
+            width: 100%;
+        }
+
+        form input {
+            padding: 10px;
+            font-size: 17px;
+            border: none;
+            outline: none;
+            /* border-radius: 15; */
+            border-top-left-radius: 17px;
+            border-bottom-left-radius: 17px;
+            max-width: 500px;
+            transition: background-color 200ms ease-in-out;
+            width: 100%;
+        }
+
+        /* Input themes */
+        form input.standard-input {
+            background-color: #181a1a;
+            color: rgb(247, 226, 223);
+        }
+
+
+        form input.light-input {
+            background-color: #AEB1B4;
+            color: #1a150e;
+        }
+
+        form input.light-input::placeholder {
+            color: #1a150e;
+            opacity: 0.7;
+        }
+
+        form input.darker-input {
+            background-color: #01394c;
+            color: white;
+        }
+
+        form input.darker-input::placeholder {
+            color: white;
+            opacity: 0.7;
+        }
+
+        form input:hover {
+            cursor: text;
+        }
+
+        form input.standard-input:hover {
+            background-color: rgb(0, 0, 0);
+        }
+
+        form input.light-input:hover {
+            background-color: #919699;
+        }
+
+        form input.darker-input:hover {
+            background-color: #013141;
+        }
+
+        button {
+            border: none;
+            outline: none;
+            transition: box-shadow 200ms ease, background-color 200ms ease-in-out;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        /* Button themes */
+        button.standard-button {
+            background-color: rgb(247, 226, 223);
+            color: rgb(0, 0, 0);
+        }
+
+        button.standard-button:hover {
+            background-color: white;
+            box-shadow: #fff8 0 0 10px;
+        }
+
+        button.light-button {
+            background-color: white;
+            color: #1a150e;
+        }
+
+        button.light-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        button.darker-button {
+            background-color: #002837;
+            color: white;
+        }
+
+        button.darker-button:hover {
+            background-color: #001f29;
+        }
+
+        form button {
+            padding: 10px;
+            font-size: 17px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            min-width: 100px;
+        }
+
+        #myUnOrdList {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1200px;
+        }
+
+        .todo-list {
+            min-width: 25%;
+
+            /* To remove the bullets of unordered list */
+            list-style: none;
+        }
+
+        .todo {
+            margin: 1rem;
+            /* background: rgb(247, 226, 223); */
+            /* color: black; */
+            font-size: 19px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25em 0.5em;
+            border-radius: 30px;
+            transition: background-color 200ms ease-in-out;
+        }
+
+        /* Items themes */
+        .standard-todo {
+            background-color: rgb(26, 27, 27);
+        }
+
+        .light-todo {
+            background-color:#AEB1B4;
+        }
+
+        .darker-todo {
+            background-color: #01394c;
+        }
+
+        .todo li{
+            padding: 7px;
+            /* word-wrap: break-word; */
+            /* flex-wrap: wrap; */
+            font-size: 20px;
+            flex: 1; /* To push the trash and the check button to the right */
+            border-radius: 30px;
+
+            /* wraps the links */
+            overflow-wrap: anywhere;
+        }
+
+        .check-btn, .delete-btn {
+            font-size: 19px;
+            cursor: pointer;
+            width: 2em;
+            height: 2em;
+            border-radius: 80%;
+            margin: 0 5px;
+        }
+
+        .todo-item {
+            padding: 0rem 0.5rem;
+        }
+
+        .fa-trash, .fa-check {
+            pointer-events: none;
+        }
+
+
+        .completed {
+            transition: 0.2s;
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .fall {
+            transition: 0.5s;
+            transform: translateY(45rem) rotateZ(45deg);
+            opacity: 0;
+        }
+
+        /* Responsive design */
+        @media only screen and (max-width: 1000px) {
+            .flexrow-container {
+                align-self: unset;
+                margin-right: 0;
             }
-            .wrapper {
-                padding: 20px 0;
+        }
+
+        @media only screen and (max-width: 800px) {
+            #header {
+                font-size: 2rem;
             }
-            .filters span{
-                margin: 0 5px;
+
+            #title {
+                animation:
+                animated-text 3s steps(16,end) 0.5s 1 normal both,
+                animated-cursor 750ms steps(16,end) infinite;
+                margin-bottom: 10px;
+                margin-top: 30px;
+                max-width: 330px;
             }
-            .task-input{
-                padding: 0 20px;
+        }
+
+        @media only screen and (max-width: 400px) {
+            #header {
+                font-size: 1.5rem;
             }
-            .controls{
-                padding: 18px 20px;
+
+            #title {
+                animation:
+                animated-text 3.5s steps(16,end) 0.5s 1 normal both,
+                animated-cursor 750ms steps(16,end) infinite;
+                max-width: 255px;
             }
-            .task-box{
-                margin-top: 20px;
-                margin-right: 5px;
-                padding: 0 15px 10px 20px;
+        }
+
+        @media only screen and (max-width: 400px) {
+            form {
+                align-items: center;
+                flex-direction: column;
             }
-            .task label input{
-                margin-top: 4px;
+
+            form input {
+                border-radius: 17px;
+            }
+
+            form button {
+                border-radius: 15px;
+                margin-top: 15px;
+                width: 50%;
+            }
+            form > button.light-button {
+                box-shadow: 0 0 5px lightgray;
             }
         }
     </style>
+
 </head>
+
 <body>
-<div class="wrapper">
-    <div class="task-input">
-        <img src="bars-icon.svg" alt="icon">
-        <input type="text" placeholder="Add a new task">
+<div id = "header">
+    <div class="flexrow-container">
+        <div class="standard-theme theme-selector"></div>
+        <div class="light-theme theme-selector"></div>
+        <div class="darker-theme theme-selector"></div>
     </div>
-    <div class="controls">
-        <div class="filters">
-            <span class="active" id="all">All</span>
-            <span id="pending">Pending</span>
-            <span id="completed">Completed</span>
-        </div>
-        <button class="clear-btn">Clear All</button>
-    </div>
-    <ul class="task-box"></ul>
+<!--    <h1 id="title">Just do it.<div id="border"></div></h1>-->
 </div>
 
-<script src="script.js"></script>
-<script>
-    const taskInput = document.querySelector(".task-input input"),
-    filters = document.querySelectorAll(".filters span"),
-    clearAll = document.querySelector(".clear-btn"),
-    taskBox = document.querySelector(".task-box");
+<div id="form">
+    <form>
+        <input class="todo-input" type="text" placeholder="Add a Command.">
+        <button class="todo-btn" type="submit">Add</button>
+    </form>
+</div>
 
-    let editId,
-    isEditTask = false,
-    todos = JSON.parse(localStorage.getItem("todo-list"));
+<!-- div for top left corner -->
+<div class="version">
+    <div class="demo version-section"><a href="https://github.com/lordwill1/todo-list" class="github-corner">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+        </svg></a>
+    </div>
+    <div>
+        <p><span id="datetime"></span></p>
+        <script src="JS/time.js"></script>
+    </div>
 
-    filters.forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelector("span.active").classList.remove("active");
-            btn.classList.add("active");
-            showTodo(btn.id);
+    <div id="myUnOrdList">
+        <ul class="todo-list">
+            <!-- (Basic Format)
+            <div class="todo">
+                items added to this list:
+                <li></li>
+                <button>delete</button>
+                <button>check</button>
+            </div> -->
+        </ul>
+    </div>
+</div>
+    <script >// Selectors
+
+    const toDoInput = document.querySelector('.todo-input');
+    const toDoBtn = document.querySelector('.todo-btn');
+    const toDoList = document.querySelector('.todo-list');
+    const standardTheme = document.querySelector('.standard-theme');
+    const lightTheme = document.querySelector('.light-theme');
+    const darkerTheme = document.querySelector('.darker-theme');
+
+
+    // Event Listeners
+
+    toDoBtn.addEventListener('click', addToDo);
+    toDoList.addEventListener('click', deletecheck);
+    document.addEventListener("DOMContentLoaded", getTodos);
+    standardTheme.addEventListener('click', () => changeTheme('standard'));
+    lightTheme.addEventListener('click', () => changeTheme('light'));
+    darkerTheme.addEventListener('click', () => changeTheme('darker'));
+
+    // Check if one theme has been set previously and apply it (or std theme if not found):
+    let savedTheme = localStorage.getItem('savedTheme');
+    savedTheme === null ?
+    changeTheme('standard')
+    : changeTheme(localStorage.getItem('savedTheme'));
+
+    // Functions;
+    function addToDo(event) {
+        // Prevents form from submitting / Prevents form from relaoding;
+        event.preventDefault();
+
+        // toDo DIV;
+        const toDoDiv = document.createElement("div");
+        toDoDiv.classList.add('todo', `${savedTheme}-todo`);
+
+        // Create LI
+        const newToDo = document.createElement('li');
+        if (toDoInput.value === '') {
+            alert("You must write something!");
+        }
+        else {
+            // newToDo.innerText = "hey";
+            newToDo.innerText = toDoInput.value;
+            newToDo.classList.add('todo-item');
+            toDoDiv.appendChild(newToDo);
+
+            // Adding to local storage;
+            savelocal(toDoInput.value);
+
+            // check btn;
+            const checked = document.createElement('button');
+            checked.innerHTML = '<i class="fas fa-check"></i>';
+            checked.classList.add('check-btn', `${savedTheme}-button`);
+            toDoDiv.appendChild(checked);
+            // delete btn;
+            const deleted = document.createElement('button');
+            deleted.innerHTML = '<i class="fas fa-trash"></i>';
+            deleted.classList.add('delete-btn', `${savedTheme}-button`);
+            toDoDiv.appendChild(deleted);
+
+            // Append to list;
+            toDoList.appendChild(toDoDiv);
+
+            // CLearing the input;
+            toDoInput.value = '';
+        }
+
+    }
+
+
+    function deletecheck(event){
+
+        // console.log(event.target);
+        const item = event.target;
+
+        // delete
+        if(item.classList[0] === 'delete-btn')
+        {
+            // item.parentElement.remove();
+            // animation
+            item.parentElement.classList.add("fall");
+
+            //removing local todos;
+            removeLocalTodos(item.parentElement);
+
+            item.parentElement.addEventListener('transitionend', function(){
+                item.parentElement.remove();
+            })
+        }
+
+        // check
+        if(item.classList[0] === 'check-btn')
+        {
+            item.parentElement.classList.toggle("completed");
+        }
+
+
+    }
+
+
+    // Saving to local storage:
+    function savelocal(todo){
+        //Check: if item/s are there;
+        let todos;
+        if(localStorage.getItem('todos') === null) {
+            todos = [];
+        }
+        else {
+            todos = JSON.parse(localStorage.getItem('todos'));
+        }
+
+        todos.push(todo);
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
+
+
+    function getTodos() {
+        //Check: if item/s are there;
+        let todos;
+        if(localStorage.getItem('todos') === null) {
+            todos = [];
+        }
+        else {
+            todos = JSON.parse(localStorage.getItem('todos'));
+        }
+
+        todos.forEach(function(todo) {
+            // toDo DIV;
+            const toDoDiv = document.createElement("div");
+            toDoDiv.classList.add("todo", `${savedTheme}-todo`);
+
+            // Create LI
+            const newToDo = document.createElement('li');
+
+            newToDo.innerText = todo;
+            newToDo.classList.add('todo-item');
+            toDoDiv.appendChild(newToDo);
+
+            // check btn;
+            const checked = document.createElement('button');
+            checked.innerHTML = '<i class="fas fa-check"></i>';
+            checked.classList.add("check-btn", `${savedTheme}-button`);
+            toDoDiv.appendChild(checked);
+            // delete btn;
+            const deleted = document.createElement('button');
+            deleted.innerHTML = '<i class="fas fa-trash"></i>';
+            deleted.classList.add("delete-btn", `${savedTheme}-button`);
+            toDoDiv.appendChild(deleted);
+
+            // Append to list;
+            toDoList.appendChild(toDoDiv);
         });
-    });
+    }
 
-    function showTodo(filter) {
-        let liTag = "";
-        if(todos) {
-            todos.forEach((todo, id) => {
-                let completed = todo.status == "completed" ? "checked" : "";
-                if(filter == todo.status || filter == "all") {
-                    liTag += `<li class="task">
-                            <label for="${id}">
-                                <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${completed}>
-                                <p class="${completed}">${todo.name}</p>
-                            </label>
-                            <div class="settings">
-                                <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
-                                <ul class="task-menu">
-                                    <li onclick='editTask(${id}, "${todo.name}")'><i class="uil uil-pen"></i>Edit</li>
-                                    <li onclick='deleteTask(${id}, "${filter}")'><i class="uil uil-trash"></i>Delete</li>
-                                </ul>
-                            </div>
-                        </li>`;
+
+    function removeLocalTodos(todo){
+        //Check: if item/s are there;
+        let todos;
+        if(localStorage.getItem('todos') === null) {
+            todos = [];
+        }
+        else {
+            todos = JSON.parse(localStorage.getItem('todos'));
+        }
+
+        const todoIndex =  todos.indexOf(todo.children[0].innerText);
+        // console.log(todoIndex);
+        todos.splice(todoIndex, 1);
+        // console.log(todos);
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
+    // Change theme function:
+    function changeTheme(color) {
+        localStorage.setItem('savedTheme', color);
+        savedTheme = localStorage.getItem('savedTheme');
+
+        document.body.className = color;
+        // Change blinking cursor for darker theme:
+        color === 'darker' ?
+        document.getElementById('title').classList.add('darker-title')
+        : document.getElementById('title').classList.remove('darker-title');
+
+        document.querySelector('input').className = `${color}-input`;
+        // Change todo color without changing their status (completed or not):
+        document.querySelectorAll('.todo').forEach(todo => {
+            Array.from(todo.classList).some(item => item === 'completed') ?
+            todo.className = `todo ${color}-todo completed`
+            : todo.className = `todo ${color}-todo`;
+        });
+        // Change buttons color according to their type (todo, check or delete):
+        document.querySelectorAll('button').forEach(button => {
+            Array.from(button.classList).some(item => {
+                if (item === 'check-btn') {
+                    button.className = `check-btn ${color}-button`;
+                } else if (item === 'delete-btn') {
+                    button.className = `delete-btn ${color}-button`;
+                } else if (item === 'todo-btn') {
+                    button.className = `todo-btn ${color}-button`;
                 }
             });
-        }
-        taskBox.innerHTML = liTag || `<span>You don't have any task here</span>`;
-        let checkTask = taskBox.querySelectorAll(".task");
-        !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
-        taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
-    }
-    showTodo("all");
-
-    function showMenu(selectedTask) {
-        let menuDiv = selectedTask.parentElement.lastElementChild;
-        menuDiv.classList.add("show");
-        document.addEventListener("click", e => {
-            if(e.target.tagName != "I" || e.target != selectedTask) {
-                menuDiv.classList.remove("show");
-            }
         });
-    }
-
-    function updateStatus(selectedTask) {
-        let taskName = selectedTask.parentElement.lastElementChild;
-        if(selectedTask.checked) {
-            taskName.classList.add("checked");
-            todos[selectedTask.id].status = "completed";
-        } else {
-            taskName.classList.remove("checked");
-            todos[selectedTask.id].status = "pending";
-        }
-        localStorage.setItem("todo-list", JSON.stringify(todos))
-    }
-
-    function editTask(taskId, textName) {
-        editId = taskId;
-        isEditTask = true;
-        taskInput.value = textName;
-        taskInput.focus();
-        taskInput.classList.add("active");
-    }
-
-    function deleteTask(deleteId, filter) {
-        isEditTask = false;
-        todos.splice(deleteId, 1);
-        localStorage.setItem("todo-list", JSON.stringify(todos));
-        showTodo(filter);
-    }
-
-    clearAll.addEventListener("click", () => {
-        isEditTask = false;
-        todos.splice(0, todos.length);
-        localStorage.setItem("todo-list", JSON.stringify(todos));
-        showTodo()
-    });
-
-    taskInput.addEventListener("keyup", e => {
-        let userTask = taskInput.value.trim();
-        if(e.key == "Enter" && userTask) {
-            if(!isEditTask) {
-                todos = !todos ? [] : todos;
-                let taskInfo = {name: userTask, status: "pending"};
-                todos.push(taskInfo);
-            } else {
-                isEditTask = false;
-                todos[editId].name = userTask;
-            }
-            taskInput.value = "";
-            localStorage.setItem("todo-list", JSON.stringify(todos));
-            showTodo(document.querySelector("span.active").id);
-        }
-    });
-</script>
-
+    } </script>
 </body>
 </html>
