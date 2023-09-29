@@ -10,7 +10,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import netscape.javascript.JSObject;
 import java.awt.*;
 import java.io.IOException;
 
@@ -63,11 +63,38 @@ public  class CommandLineCodeRunner {
         }
 
     }
+
+
+    // Inject the JavaScriptBridge instance into the JavaScript context
+//        webEngine.executeScript("window.javaBridge = {};");
+//        webEngine.executeScript("window.javaBridge.addToDoItem = function(todoText) { javaBridge.addToDoItem(todoText); }");
+//        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+//
+//        });
     private static void showHtmlContent(TrayIcon trayIcon) {
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
 
+        webEngine.setJavaScriptEnabled(true);
+        JSObject jsBridge = (JSObject) webView.getEngine().executeScript("window");
+        jsBridge.setMember("javaBridge", new JavaScriptBridge(webView));
+
         webEngine.load(CommandLineCodeRunner.class.getResource("/commandLine.html").toExternalForm());
+
+//        webEngine.WebConsoleListener.setDefaultListener(
+//                (webView1, message, lineNumber, sourceId) -> {
+//                    if (message.contains("Error")) {
+//                        System.err.println("JavaScript Error: [" + sourceId + ":" + lineNumber + "] " + message);
+//                    } else {
+//                        System.out.println("Console: [" + sourceId + ":" + lineNumber + "] " + message);
+//                    }
+//                }
+//        );
+        if(jsBridge.getMember("javaBridge") == null) {
+            System.out.println("javaBridge not found");
+        }else {
+            System.out.println(jsBridge.getMember("javaBridge").toString());
+        }
 
         // Create a JavaFX Stage to display the WebView
         Stage stage = new Stage();
@@ -132,3 +159,23 @@ public  class CommandLineCodeRunner {
 //        throw new RuntimeException(e);
 //    }
 }
+
+
+ class JavaScriptBridge {
+    private WebView webView;
+
+    public JavaScriptBridge(WebView webView) {
+        this.webView = webView;
+    }
+
+    public String addToDoItem(String todoText) {
+        // Add your Java code logic here to handle the addition of the todo item.
+        // You can use 'todoText' as the input parameter.
+        // For example:
+        // MyBackend.addToDoItem(todoText);
+        System.out.println("fucitn back " + todoText);
+        return "hello world";
+    }
+}
+
+

@@ -17,6 +17,7 @@ module com.example.terminalrunner {
     requires org.json;
 
     requires com.jfoenix;
+    requires jdk.jsobject;
 //    requires org.hildan.fxgson;
 
 

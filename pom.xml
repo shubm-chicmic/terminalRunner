@@ -149,6 +149,12 @@
         <!--            <artifactId>jackson-databind</artifactId>-->
         <!--            -->
         <!--        </dependency>-->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.23</version>
+        </dependency>
+        <!-- Thanks for using https://jar-download.com -->
 
 
 

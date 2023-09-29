@@ -446,6 +446,8 @@
         <div class="standard-theme theme-selector"></div>
         <div class="light-theme theme-selector"></div>
         <div class="darker-theme theme-selector"></div>
+        <button onclick="handleAddButtonClick()" id="add">Add</button>
+
     </div>
 <!--    <h1 id="title">Just do it.<div id="border"></div></h1>-->
 </div>
@@ -455,6 +457,9 @@
         <input class="todo-input" type="text" placeholder="Add a Command.">
         <button class="todo-btn" type="submit">Add</button>
     </form>
+
+
+
 </div>
 
 <!-- div for top left corner -->
@@ -507,9 +512,19 @@
     savedTheme === null ?
     changeTheme('standard')
     : changeTheme(localStorage.getItem('savedTheme'));
+    function handleAddButtonClick() {
+        document.getElementById("add").innerHTML = "value";
+        try{
+            var result =  javaBridge.addToDoItem("Button clicked"); // For example, you can call your Java bridge method here.
+        }catch (e){
+            document.write(e);
+        }
+    }
 
     // Functions;
     function addToDo(event) {
+        javaBridge.addToDoItem("i am calling form js");
+
         // Prevents form from submitting / Prevents form from relaoding;
         event.preventDefault();
 
@@ -527,7 +542,7 @@
             newToDo.innerText = toDoInput.value;
             newToDo.classList.add('todo-item');
             toDoDiv.appendChild(newToDo);
-
+            console.log("New todo has been added")
             // Adding to local storage;
             savelocal(toDoInput.value);
 
