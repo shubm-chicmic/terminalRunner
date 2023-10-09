@@ -18,7 +18,10 @@ module com.example.terminalrunner {
 
     requires com.jfoenix;
     requires jdk.jsobject;
+    requires freetts;
+    requires sphinx4.core;
 //    requires org.hildan.fxgson;
+
 
 
 

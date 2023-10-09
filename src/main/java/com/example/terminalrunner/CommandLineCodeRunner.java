@@ -41,7 +41,7 @@ public  class CommandLineCodeRunner {
 
 
 
-            // Create a menu item to exit the application
+
             MenuItem exitMenuItem = new MenuItem("Exit");
             exitMenuItem.addActionListener(e -> System.exit(0));
 
@@ -51,7 +51,7 @@ public  class CommandLineCodeRunner {
 
             trayIcon.setPopupMenu(popupMenu);
 
-            // Add the tray icon to the system tray
+
             try {
                 SystemTray.getSystemTray().add(trayIcon);
             } catch (AWTException e) {
@@ -81,7 +81,7 @@ public  class CommandLineCodeRunner {
 
         webEngine.load(CommandLineCodeRunner.class.getResource("/commandLine.html").toExternalForm());
 
-//        webEngine.WebConsoleListener.setDefaultListener(
+//        webEngine.WebConsoleListener.setDefa- ultListener(
 //                (webView1, message, lineNumber, sourceId) -> {
 //                    if (message.contains("Error")) {
 //                        System.err.println("JavaScript Error: [" + sourceId + ":" + lineNumber + "] " + message);
